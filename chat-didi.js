@@ -131,7 +131,7 @@
   `;
   document.body.appendChild(container);
 
-  const webhookURL = "https://rafahotmail.app.n8n.cloud/webhook/didi";
+  const webhookURL = "https://didi-proxy.vercel.app/api";
 
   document.getElementById("chat-button").onclick = () => {
     const chatBox = document.getElementById("chat-box");
