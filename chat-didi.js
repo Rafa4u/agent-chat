@@ -6,7 +6,7 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background-color: #1e90ff;
+      background-color: #0577d9;
       border: none;
       border-radius: 50%;
       width: 60px;
@@ -59,7 +59,7 @@
     }
 
     #chat-header {
-      background-color: #1e90ff;
+      background-color: #0577d9;
       color: white;
       padding: 10px;
       font-weight: bold;
@@ -75,7 +75,7 @@
     }
 
     .user-msg {
-      background-color: #1e90ff;
+      background-color: #0577d9;
       color: white;
       padding: 8px 12px;
       margin: 5px;
@@ -108,7 +108,7 @@
     }
 
     #chat-input button {
-      background-color: #1e90ff;
+      background-color: #0577d9;
       color: white;
       border: none;
       padding: 10px 15px;
