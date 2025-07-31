@@ -123,7 +123,7 @@
   container.innerHTML = `
     <div id="chat-button"></div>
     <div id="chat-box">
-      <div id="chat-header"> 👩🏻 Didi Assistente com IA</div>
+      <div id="chat-header"> 👩🏻 Didi - Assistente com IA</div>
       <div id="chat-messages"></div>
       <div id="chat-input">
         <input type="text" id="user-input" placeholder="Digite sua mensagem...">
