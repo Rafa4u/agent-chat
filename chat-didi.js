@@ -168,7 +168,11 @@
     fetch(webhookURL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: msg })
+      body: JSON.stringify({
+        body: {
+          text: msg
+        }
+      })
     })
     .then(res => res.json())
     .then(data => {
