@@ -1,6 +1,7 @@
 (function() {
   const style = document.createElement("style");
   style.innerHTML = `
+    /* Estilo do botão e da janela do chat */
     #chat-button {
       position: fixed;
       bottom: 20px;
@@ -133,7 +134,7 @@
   `;
   document.body.appendChild(container);
 
-  const webhookURL = "https://rafahotmail.app.n8n.cloud/webhook/didi";
+  const webhookURL = "https://didi-proxy.vercel.app/api"; // 🔁 Troque para seu domínio real da Vercel
 
   document.getElementById("chat-button").onclick = () => {
     const chatBox = document.getElementById("chat-box");
@@ -169,18 +170,16 @@
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        body: {
-          text: msg
-        }
+        mensagem: msg
       })
     })
     .then(res => res.json())
     .then(data => {
-      const resposta = data.resposta || "Desculpe, não entendi.";
+      const resposta = data.resposta || data.message || "Desculpe, não entendi.";
       addMessage(resposta, "bot-msg");
     })
     .catch(() => {
-      addMessage("Erro ao conectar com o Didi. Tente novamente mais tarde.", "bot-msg");
+      addMessage("Erro ao conectar com a Didi. Tente novamente mais tarde.", "bot-msg");
     });
   }
 
@@ -188,7 +187,8 @@
     const div = document.createElement("div");
     div.className = className;
     div.innerText = text;
-    document.getElementById("chat-messages").appendChild(div);
-    document.getElementById("chat-messages").scrollTop = document.getElementById("chat-messages").scrollHeight;
+    const chat = document.getElementById("chat-messages");
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
   }
 })();
