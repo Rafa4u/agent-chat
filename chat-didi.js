@@ -1,3 +1,4 @@
+
 (function() {
   const style = document.createElement("style");
   style.innerHTML = `
@@ -14,11 +15,19 @@
       cursor: pointer;
       z-index: 9999;
     }
-   #chat-button {
+
+    #chat-button {
       display: flex;
       align-items: center;
       justify-content: center;
     }
+
+    #chat-button::before {
+      content: '💬';
+      font-size: 24px;
+      color: white;
+    }
+
     #chat-box {
       position: fixed;
       bottom: 90px;
@@ -128,7 +137,7 @@
   `;
   document.body.appendChild(container);
 
-  const webhookURL = "https://didi-proxy.vercel.app/api";
+  const webhookURL = "https://rafahotmail.app.n8n.cloud/webhook/didi";
 
   document.getElementById("chat-button").onclick = () => {
     const chatBox = document.getElementById("chat-box");
