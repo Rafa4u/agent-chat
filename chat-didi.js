@@ -1,4 +1,3 @@
-
 (function() {
   const style = document.createElement("style");
   style.innerHTML = `
@@ -15,13 +14,11 @@
       cursor: pointer;
       z-index: 9999;
     }
-
-    #chat-button::before {
-      content: '💬';
-      font-size: 24px;
-      color: white;
+   #chat-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
     #chat-box {
       position: fixed;
       bottom: 90px;
