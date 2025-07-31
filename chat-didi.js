@@ -1,4 +1,3 @@
-
 (function() {
   const style = document.createElement("style");
   style.innerHTML = `
@@ -14,9 +13,6 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       cursor: pointer;
       z-index: 9999;
-    }
-
-    #chat-button {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -173,7 +169,6 @@
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text: msg })
-
     })
     .then(res => res.json())
     .then(data => {
