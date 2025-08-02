@@ -134,7 +134,7 @@
   `;
   document.body.appendChild(container);
 
-  const webhookURL = "https://didi-proxy.vercel.app/api"; // 🔁 Troque para seu domínio real da Vercel
+  const webhookURL = "https://agent-chat-ten.vercel.app"; // fix it rafa!!
 
   document.getElementById("chat-button").onclick = () => {
     const chatBox = document.getElementById("chat-box");
