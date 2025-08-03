@@ -134,7 +134,7 @@
   `;
   document.body.appendChild(container);
 
-  const webhookURL = "https://agent-chat-ten.vercel.app/api/index"; // aqui está o problema rafa
+  const webhookURL = "https://agent-chat-ten.vercel.app/api"; // aqui está o problema rafa
 
   document.getElementById("chat-button").onclick = () => {
     const chatBox = document.getElementById("chat-box");
