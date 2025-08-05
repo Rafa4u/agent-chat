@@ -178,7 +178,8 @@
       const resposta = data.resposta || data.message || "Desculpe, não entendi.";
       addMessage(resposta, "bot-msg");
     })
-    .catch(() => {
+    .catch((error) => {
+      console.error("erro na requisição", error);
       addMessage("Erro ao conectar com a Didi. Tente novamente mais tarde.", "bot-msg");
     });
   }
