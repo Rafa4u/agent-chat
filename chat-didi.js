@@ -1,8 +1,6 @@
-<script>
 (function() {
   const style = document.createElement("style");
   style.innerHTML = `
-    /* Estilo do botão e da janela do chat */
     #chat-button {
       position: fixed;
       bottom: 23px;
@@ -19,12 +17,7 @@
       align-items: center;
       justify-content: center;
     }
-
-    #chat-button::before {
-      content: '💬';
-      font-size: 24px;
-      color: white;
-    }
+    #chat-button::before { content: '💬'; font-size: 24px; color: white; }
 
     #chat-box {
       position: fixed;
@@ -44,80 +37,18 @@
       transform: translateY(20px);
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
+    .chat-visible { display: flex !important; opacity: 1 !important; transform: translateY(0) !important; }
+    .chat-hidden { opacity: 0 !important; transform: translateY(20px) !important; }
 
-    .chat-visible {
-      display: flex !important;
-      opacity: 1 !important;
-      transform: translateY(0) !important;
-    }
+    #chat-header { background-color: #0577d9; color: white; padding: 10px; font-weight: bold; border-top-left-radius: 15px; border-top-right-radius: 15px; }
+    #chat-messages { flex: 1; padding: 10px; overflow-y: auto; background-color: #f5f5f5; }
+    .user-msg { background-color: #0577d9; color: white; padding: 8px 12px; margin: 5px; border-radius: 12px; align-self: flex-end; max-width: 80%; }
+    .bot-msg { background-color: #e0e0e0; color: #333; padding: 8px 12px; margin: 5px; border-radius: 12px; align-self: flex-start; max-width: 80%; }
 
-    .chat-hidden {
-      opacity: 0 !important;
-      transform: translateY(20px) !important;
-    }
-
-    #chat-header {
-      background-color: #0577d9;
-      color: white;
-      padding: 10px;
-      font-weight: bold;
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
-    }
-
-    #chat-messages {
-      flex: 1;
-      padding: 10px;
-      overflow-y: auto;
-      background-color: #f5f5f5;
-    }
-
-    .user-msg {
-      background-color: #0577d9;
-      color: white;
-      padding: 8px 12px;
-      margin: 5px;
-      border-radius: 12px;
-      align-self: flex-end;
-      max-width: 80%;
-    }
-
-    .bot-msg {
-      background-color: #e0e0e0;
-      color: #333;
-      padding: 8px 12px;
-      margin: 5px;
-      border-radius: 12px;
-      align-self: flex-start;
-      max-width: 80%;
-    }
-
-    #chat-input {
-      display: flex;
-      border-top: 1px solid #ccc;
-    }
-
-    #chat-input input {
-      flex: 1;
-      border: none;
-      padding: 10px;
-      font-size: 14px;
-      border-bottom-left-radius: 15px;
-    }
-
-    #chat-input button {
-      background-color: #0577d9;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      font-weight: bold;
-      border-bottom-right-radius: 15px;
-      cursor: pointer;
-    }
-
-    #chat-input input:focus {
-      outline: none;
-    }
+    #chat-input { display: flex; border-top: 1px solid #ccc; }
+    #chat-input input { flex: 1; border: none; padding: 10px; font-size: 14px; border-bottom-left-radius: 15px; }
+    #chat-input button { background-color: #0577d9; color: white; border: none; padding: 10px 15px; font-weight: bold; border-bottom-right-radius: 15px; cursor: pointer; }
+    #chat-input input:focus { outline: none; }
   `;
   document.head.appendChild(style);
 
@@ -137,28 +68,24 @@
 
   const webhookURL = "https://didi-proxy.vercel.app/api";
 
-  // botão de abrir/fechar o chat
+  // abre/fecha
   document.getElementById("chat-button").onclick = () => {
     const chatBox = document.getElementById("chat-box");
     if (chatBox.classList.contains("chat-visible")) {
       chatBox.classList.remove("chat-visible");
       chatBox.classList.add("chat-hidden");
-      setTimeout(() => {
-        chatBox.style.display = "none";
-      }, 300);
+      setTimeout(() => { chatBox.style.display = "none"; }, 300);
     } else {
       chatBox.style.display = "flex";
       chatBox.classList.remove("chat-hidden");
-      setTimeout(() => {
-        chatBox.classList.add("chat-visible");
-      }, 10);
+      setTimeout(() => { chatBox.classList.add("chat-visible"); }, 10);
     }
   };
 
-  // envio de mensagem com o botão
+  // enviar com botão
   document.getElementById("chat-send").onclick = sendMessage;
 
-  // envio de mensagem com Enter
+  // enviar com Enter (sem Shift)
   document.getElementById("user-input").addEventListener("keydown", function(e) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -166,7 +93,6 @@
     }
   });
 
-  // função para enviar mensagem
   function sendMessage() {
     const input = document.getElementById("user-input");
     const msg = input.value.trim();
@@ -191,20 +117,15 @@
       });
   }
 
-  // função para adicionar mensagens ao chat
+  // única função addMessage (links clicáveis nas respostas do bot)
   function addMessage(text, className) {
     const div = document.createElement("div");
     div.className = className;
 
-    // se for resposta do bot, converte URLs em links clicáveis
     if (className === "bot-msg") {
-      const esc = (s) =>
-        s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+      const esc = (s) => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
       const urlRe = /(https?:\/\/[^\s)]+)\b/g;
-      const html = esc(text).replace(
-        urlRe,
-        '<a href="$1" target="_blank" rel="noopener">$1</a>'
-      );
+      const html = esc(text).replace(urlRe, '<a href="$1" target="_blank" rel="noopener">$1</a>');
       div.innerHTML = html;
     } else {
       div.innerText = text;
@@ -215,4 +136,3 @@
     chat.scrollTop = chat.scrollHeight;
   }
 })();
-</script>
