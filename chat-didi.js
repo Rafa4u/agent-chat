@@ -5,7 +5,7 @@
     #chat-button {
       position: fixed;
       bottom: 20px;
-      right: 20px;
+      right: 60px;
       background-color: #0577d9;
       border: none;
       border-radius: 50%;
