@@ -1,3 +1,4 @@
+<script>
 (function() {
   const style = document.createElement("style");
   style.innerHTML = `
@@ -134,8 +135,9 @@
   `;
   document.body.appendChild(container);
 
-  const webhookURL = "https://didi-proxy.vercel.app/api"; // aqui está o problema rafa
+  const webhookURL = "https://didi-proxy.vercel.app/api";
 
+  // botão de abrir/fechar o chat
   document.getElementById("chat-button").onclick = () => {
     const chatBox = document.getElementById("chat-box");
     if (chatBox.classList.contains("chat-visible")) {
@@ -153,38 +155,64 @@
     }
   };
 
+  // envio de mensagem com o botão
   document.getElementById("chat-send").onclick = sendMessage;
-  document.getElementById("user-input").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") sendMessage();
+
+  // envio de mensagem com Enter
+  document.getElementById("user-input").addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
   });
 
-function addMessage(text, className) {
-  const div = document.createElement("div");
-  div.className = className;
+  // função para enviar mensagem
+  function sendMessage() {
+    const input = document.getElementById("user-input");
+    const msg = input.value.trim();
+    if (!msg) return;
 
-  // para mensagens do BOT: transforma URLs em links clicáveis
-  if (className === "bot-msg") {
-    const esc = (s) => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-    const urlRe = /(https?:\/\/[^\s)]+)\b/g;
-    const html = esc(text).replace(urlRe, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-    div.innerHTML = html;
-  } else {
-    // para o usuário, mantém texto puro
-    div.innerText = text;
+    addMessage(msg, "user-msg");
+    input.value = "";
+
+    fetch(webhookURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mensagem: msg })
+    })
+      .then(res => res.json())
+      .then(data => {
+        const resposta = data.reply || data.resposta || data.message || data.text || JSON.stringify(data);
+        addMessage(resposta, "bot-msg");
+      })
+      .catch(error => {
+        console.error("erro na requisição", error);
+        addMessage("Erro ao conectar com a Didi. Tente novamente mais tarde.", "bot-msg");
+      });
   }
 
-  const chat = document.getElementById("chat-messages");
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-
+  // função para adicionar mensagens ao chat
   function addMessage(text, className) {
     const div = document.createElement("div");
     div.className = className;
-    div.innerText = text;
+
+    // se for resposta do bot, converte URLs em links clicáveis
+    if (className === "bot-msg") {
+      const esc = (s) =>
+        s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+      const urlRe = /(https?:\/\/[^\s)]+)\b/g;
+      const html = esc(text).replace(
+        urlRe,
+        '<a href="$1" target="_blank" rel="noopener">$1</a>'
+      );
+      div.innerHTML = html;
+    } else {
+      div.innerText = text;
+    }
+
     const chat = document.getElementById("chat-messages");
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
   }
 })();
+</script>
