@@ -158,32 +158,26 @@
     if (e.key === "Enter") sendMessage();
   });
 
-  function sendMessage() {
-    const input = document.getElementById("user-input");
-    const msg = input.value.trim();
-    if (!msg) return;
+function addMessage(text, className) {
+  const div = document.createElement("div");
+  div.className = className;
 
-    addMessage(msg, "user-msg");
-    input.value = "";
-
-    fetch(webhookURL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        mensagem: msg
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-      const resposta = data.reply || data.resposta || data.message || data.text || JSON.stringify(data);
-
-      addMessage(resposta, "bot-msg");
-    })
-    .catch((error) => {
-      console.error("erro na requisição", error);
-      addMessage("Erro ao conectar com a Didi. Tente novamente mais tarde.", "bot-msg");
-    });
+  // para mensagens do BOT: transforma URLs em links clicáveis
+  if (className === "bot-msg") {
+    const esc = (s) => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    const urlRe = /(https?:\/\/[^\s)]+)\b/g;
+    const html = esc(text).replace(urlRe, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+    div.innerHTML = html;
+  } else {
+    // para o usuário, mantém texto puro
+    div.innerText = text;
   }
+
+  const chat = document.getElementById("chat-messages");
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
 
   function addMessage(text, className) {
     const div = document.createElement("div");
