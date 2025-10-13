@@ -4,13 +4,13 @@
     /* Estilo do botão e da janela do chat */
     #chat-button {
       position: fixed;
-      bottom: 25px;
+      bottom: 23px;
       right: 100px;
       background-color: #0577d9;
       border: none;
       border-radius: 50%;
-      width: 70px;
-      height: 70px;
+      width: 65px;
+      height: 65px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       cursor: pointer;
       z-index: 9999;
