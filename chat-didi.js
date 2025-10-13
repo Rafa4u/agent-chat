@@ -175,7 +175,8 @@
     })
     .then(res => res.json())
     .then(data => {
-      const resposta = data.resposta || data.message || "Desculpe, não entendi.";
+      const resposta = data.reply || data.resposta || data.message || data.text || JSON.stringify(data);
+
       addMessage(resposta, "bot-msg");
     })
     .catch((error) => {
